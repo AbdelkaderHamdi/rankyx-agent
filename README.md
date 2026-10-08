@@ -34,11 +34,23 @@ The graph runs four sequential nodes:
 ## 📁 Project Structure
 
 ```
-.
-├── ai_agent.ipynb              # Main agent
-├── .env.example                # Environment variable template
+rankyx-agent/
+├── app.py                  # Streamlit UI
+├── requirements.txt
+├── .env.example
 ├── assets/
 │   └── agent-flow.jpg          # Flow diagram
+├── src/
+│   ├── __init__.py
+│   ├── config.py           # load env, constants, model name
+│   ├── schemas.py          # Pydantic models + graph State
+│   ├── nodes/
+│   │   ├── suggest_queries.py
+│   │   ├── search.py
+│   │   ├── scrape.py
+│   │   └── report.py
+│   ├── graph.py            # builds the LangGraph app
+│   └── utils.py            # save JSON, helpers
 └── ai-agent-output/            # Generated on first run
     ├── step_1_suggested_search_queries.json
     ├── step_2_search_results.json
@@ -60,13 +72,7 @@ cd rankyx-agent
 ### 2. Install dependencies
 
 ```bash
-pip install -U \
-  langchain-groq \
-  langgraph \
-  tavily-python \
-  scrapegraph-py \
-  pydantic \
-  python-dotenv
+pip install -r .\requirements.txt
 ```
 
 
@@ -97,22 +103,6 @@ Output is written to `./ai-agent-output/`. Open `step_4_procurement_report.html`
 ---
 
 ## ⚙️ Configuration
-
-Edit the `inputs` block at the bottom of `ai_agent.ipynb`:
-
-```python
-app.invoke({
-    "inputs": {
-        "product_name": "coffee machine for the office",
-        "websites_list": ["www.amazon.eg", "www.jumia.com.eg", "www.noon.com/egypt-en"],
-        "country_name": "Egypt",
-        "no_keywords": 10,
-        "language": "English",
-        "score_th": 0.10,
-        "top_recommendations_no": 10,
-    }
-})
-```
 
 | Field | Description |
 |---|---|
